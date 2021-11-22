@@ -1,7 +1,7 @@
 CR_NAME		?= ghcr.io
 CR_USER		?= takekazuomi
-IMAGE_NAME	?= $(CR_NAME)/$(CR_USER)/golang-grpc01
-TAG		?= 0.0.1
+IMAGE_NAME	?= $(CR_NAME)/$(CR_USER)/golang-grpc02
+TAG		= $(shell git log -1 --pretty=format:%h)
 SERVER		= localhost
 SERVER_PORT	= 50051
 

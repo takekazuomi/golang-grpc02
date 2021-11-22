@@ -1,6 +1,6 @@
 RESOURCE_GROUP				= omi01-rg
 LOCATION				= canadacentral
-NAME					= golang-grpc01
+NAME					= golang-grpc02
 CONTAINERAPPS_ENVIRONMENT		= containerapps-env01
 CONTAINERAPPS_NAME			= $(NAME)
 CR_NAME					?= ghcr.io

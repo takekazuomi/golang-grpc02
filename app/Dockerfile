@@ -20,12 +20,10 @@ RUN wget -q -P /tmp https://github.com/protocolbuffers/protobuf/releases/downloa
 COPY . .
 RUN go mod download -x
 
-#RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 \
-#    && go build -ldflags="-w -s" -o server/server server/main.go \
-#    && go build -ldflags="-w -s" -o client/client client/main.go
-
+ENV CGO_ENABLED=0
 RUN go build -o server/server server/main.go \
     && go build -o client/client client/main.go
+
 
 FROM scratch
 #FROM debian:bullseye-slim
