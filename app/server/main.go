@@ -19,7 +19,6 @@ type server struct {
 }
 
 var (
-	//port = flag.Int("port", 50051, "The server port")
 	port = getEnv("PORT", "50051")
 )
 
@@ -33,24 +32,8 @@ func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloRe
 	}
 
 	log.Printf("Received %v", in.Name)
-	return &pb.HelloReply{Message: "Hello " + in.Name + " from " + hostname}, nil
+	return &pb.HelloReply{Message: "Hello '" + in.Name + "' from " + hostname}, nil
 }
-
-// func loadTLSCredentials() (credentials.TransportCredentials, error) {
-// 	// Load server's certificate and private key
-// 	serverCert, err := tls.LoadX509KeyPair("cert/server-cert.pem", "cert/server-key.pem")
-// 	if err != nil {
-// 		return nil, err
-// 	}
-
-// 	// Create the credentials and return it
-// 	config := &tls.Config{
-// 		Certificates: []tls.Certificate{serverCert},
-// 		ClientAuth:   tls.NoClientCert,
-// 	}
-
-// 	return credentials.NewTLS(config), nil
-// }
 
 func getEnv(key, fallback string) string {
 	if value, ok := os.LookupEnv(key); ok {
@@ -63,18 +46,11 @@ func getEnv(key, fallback string) string {
 func main() {
 	flag.Parse()
 
-	// tlsCredentials, err := loadTLSCredentials()
-	// if err != nil {
-	// 	log.Fatal("cannot load TLS credentials: ", err)
-	// }
-
-	//lis, err := net.Listen("tcp", fmt.Sprintf("localhost:%d", *port))
 	lis, err := net.Listen("tcp", fmt.Sprintf(":%v", port))
 	if err != nil {
 		log.Fatalf("failed to listen: %v", err)
 	}
 
-	//	s := grpc.NewServer(grpc.Creds(tlsCredentials))
 	s := grpc.NewServer()
 
 	pb.RegisterGreeterServer(s, &server{})

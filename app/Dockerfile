@@ -29,7 +29,7 @@ FROM scratch
 #FROM debian:bullseye-slim
 
 WORKDIR /app
-COPY --from=builder /app/client/client .
+#COPY --from=builder /app/client/client .
 COPY --from=builder /app/server/server .
 
 CMD [ "./server" ]
