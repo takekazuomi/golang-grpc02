@@ -31,8 +31,13 @@ func (s *server) SayHello(ctx context.Context, in *pb.HelloRequest) (*pb.HelloRe
 		hostname = "unknown"
 	}
 
+	env := os.Environ()
+	for i, v := range env {
+		fmt.Printf("[%d] %v\n", i, v)
+	}
+
 	log.Printf("Received %v", in.Name)
-	return &pb.HelloReply{Message: "Hello '" + in.Name + "' from " + hostname}, nil
+	return &pb.HelloReply{Message: "Hello2 '" + in.Name + "' from " + hostname}, nil
 }
 
 func getEnv(key, fallback string) string {

@@ -17,6 +17,7 @@ TRANSPORT				= http2
 ALLOWINSECURE				= false
 SERVER_PORT				= 443
 CONTAINER_PORT				= 50051
+CONTAINER_ONLY				= false
 
 help:		## Show this help.
 	@sed -ne '/@sed/!s/## //p' $(MAKEFILE_LIST)
@@ -82,7 +83,11 @@ deploy:
 	isExternalIngress=true \
 	transport=$(TRANSPORT) \
 	allowInsecure=$(ALLOWINSECURE) \
+	containerOnly=$(CONTAINER_ONLY) \
 	-o table
+
+app-deploy:
+	$(MAKE) deploy CONTAINER_ONLY=true
 
 clean:
 	az group delete \

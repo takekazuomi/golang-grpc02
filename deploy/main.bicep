@@ -12,8 +12,15 @@ param minReplicas int = 0
 param transport string = 'auto'
 param allowInsecure bool = false
 param env array = []
+param containerOnly bool = false
 
-module environment './environment.bicep' = {
+var environmentId = containerOnly ? environmentExisting.id : environment.outputs.environmentId
+
+resource environmentExisting 'Microsoft.Web/kubeEnvironments@2021-02-01' existing = {
+  name: environmentName
+}
+
+module environment './environment.bicep' = if(!containerOnly) {
   name: 'environment'
   params: {
     location: location
@@ -21,8 +28,8 @@ module environment './environment.bicep' = {
   }
 }
 
-module httpApps 'container.bicep' = {
-  name: 'httpApps'
+module containerApps 'container.bicep' = {
+  name: 'containerApps'
   params: {
     location: location
     containerAppName: containerAppName
@@ -31,7 +38,7 @@ module httpApps 'container.bicep' = {
     containerRegistry: containerRegistry
     containerRegistryPassword: containerRegistryPassword
     containerRegistryUsername: containerRegistryUsername
-    environmentId: environment.outputs.environmentId
+    environmentId: environmentId
     isExternalIngress: isExternalIngress
     minReplicas: minReplicas
     transport: transport
